@@ -33,7 +33,10 @@ class Field {
                 console.log('Invalid move');
                 return;
         }
-        
+        if (x < 0 || y < 0 || x >= this.field.length || y >= this.field[0].length) {
+            console.log('Out of Bounds!');
+            return;
+        }
     }
 }
 
