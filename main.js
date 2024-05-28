@@ -20,7 +20,7 @@ class Field {
             console.log(`Now it's time to customise your field of play...`)
             const height = parseInt(prompt('Enter field grid height: '), 10);
             const width = parseInt(prompt ('Enter field grid width: '), 10);
-            const percentage = parseInt(prompt('Enter percentage of holes on field: '));
+            const percentage = parseInt(prompt('Enter percentage of holes on field: '), 10);
             this.resetField(height, width, percentage);
         } else {
             console.log('Thanks for playing!');
@@ -113,7 +113,11 @@ Field.generateField = function(height, width, percentage) {
     return fieldGrid;
 };
 
-const myField = new Field(Field.generateField(5, 5, 20));
+const min = 5;
+const max = 15
+const random = Math.floor(Math.random() * (max - min + 1) + min);
+const randomPercentage = Math.floor(Math.random() * 31) + 20;
+const myField = new Field(Field.generateField(random, random, randomPercentage));
 
 console.clear();
 myField.print();
