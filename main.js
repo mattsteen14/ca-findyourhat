@@ -94,9 +94,12 @@ Field.generateField = function(height, width, percentage) {
         const row = Array(width).fill(fieldCharacter);
         fieldGrid.push(row);
     }
-    // Place hat
-    const hatX = Math.floor(Math.random() * width);
-    const hatY = Math.floor(Math.random() * height);
+    // Place hat, ensuring it's not at (0, 0)
+    let hatX, hatY
+    do {
+        hatX = Math.floor(Math.random() * width);
+        hatY = Math.floor(Math.random() * height);
+    } while (hatX === 0 && hatY === 0);
     fieldGrid[hatY][hatX] = hat;
     // Place holes
     for (let i = 0; i < holeCount; i++) {
@@ -104,7 +107,7 @@ Field.generateField = function(height, width, percentage) {
         do {
             x = Math.floor(Math.random() * width);
             y = Math.floor(Math.random() * height);
-        } while (fieldGrid[y][x] !== fieldCharacter); //Make sure we're putting the hole in an empty spot
+        } while ((x === 0 && y === 0) || fieldGrid[y][x] !== fieldCharacter); //Make sure we're putting the hole in an empty spot
         fieldGrid[y][x] =  hole;
     }
     return fieldGrid;
