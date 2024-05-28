@@ -17,18 +17,18 @@ class Field {
     playerChoice() {
         const choice = prompt('Would you like to play again? y or n: ');
         if (choice.toLowerCase() === 'y') {
-            this.resetField();
+            console.log(`Now it's time to customise your field of play...`)
+            const height = parseInt(prompt('Enter field grid height: '), 10);
+            const width = parseInt(prompt ('Enter field grid width: '), 10);
+            const percentage = parseInt(prompt('Enter percentage of holes on field: '));
+            this.resetField(height, width, percentage);
         } else {
             console.log('Thanks for playing!');
             process.exit();
         }
     }
-    resetField() {
-        this.field = [
-            [pathCharacter, fieldCharacter, hole],
-            [fieldCharacter, hole, fieldCharacter],
-            [fieldCharacter, hat, fieldCharacter],
-        ];
+    resetField(height, width, percentage) {
+        this.field = Field.generateField(height, width, percentage);
         this.playerPosition = { x: 0, y: 0 };
         console.clear();
         // this.print();
@@ -73,11 +73,44 @@ class Field {
     }
 }
 
-const myField = new Field([
-    [pathCharacter, fieldCharacter, hole],
-    [fieldCharacter, hole, fieldCharacter],
-    [fieldCharacter, hat, fieldCharacter],
-]);
+//Static method for generating a field
+Field.generateField = function(height, width, percentage) {
+    if (!Number.isInteger(height) || height <= 0) {
+        throw new Error('Height must be a positive integer');
+    }
+    if (!Number.isInteger(width) || width <= 0) {
+        throw new Error('Width must be a positive integer');
+    }
+    if (!Number.isInteger(percentage) || percentage <= 0) {
+        throw new Error('Percentage must be a positive integer');
+    }
+    const totalCells = height * width;
+    const holeCount = Math.floor((percentage / 100) * totalCells);
+    // const tiles = [hat, hole, fieldCharacter, pathCharacter];
+    // const random = Math.floor(Math.random() * tiles.length);
+    const fieldGrid = [];
+    //Initialise a field with all field characters
+    for (let i = 0; i < height; i++) {
+        const row = Array(width).fill(fieldCharacter);
+        fieldGrid.push(row);
+    }
+    // Place hat
+    const hatX = Math.floor(Math.random() * width);
+    const hatY = Math.floor(Math.random() * height);
+    fieldGrid[hatY][hatX] = hat;
+    // Place holes
+    for (let i = 0; i < holeCount; i++) {
+        let x, y;
+        do {
+            x = Math.floor(Math.random() * width);
+            y = Math.floor(Math.random() * height);
+        } while (fieldGrid[y][x] !== fieldCharacter); //Make sure we're putting the hole in an empty spot
+        fieldGrid[y][x] =  hole;
+    }
+    return fieldGrid;
+};
+
+const myField = new Field(Field.generateField(5, 5, 20));
 
 console.clear();
 myField.print();
