@@ -7,7 +7,10 @@ const pathCharacter = '*';
 
 class Field {
     constructor(field) {
-        this.field = field
+        this.field = field;
+    }
+    print() {
+        this.field.forEach(row => console.log(row.join('')));
     }
 }
 
@@ -16,3 +19,5 @@ const myField = new Field([
     [fieldCharacter, hole, fieldCharacter],
     [fieldCharacter, hat, fieldCharacter],
 ]);
+
+myField.print();
