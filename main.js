@@ -37,6 +37,17 @@ class Field {
             console.log('Out of Bounds!');
             return;
         }
+        const nextPosition = this.field[x][y];
+        if (nextPosition === hole) {
+            console.log('You fell into a hole!');
+            return;
+        } else if (nextPosition === hat) {
+            console.log('You found your hat!');
+            return;
+        }
+        this.field[this.playerPosition.x][this.playerPosition.y] = fieldCharacter;
+        this.playerPosition = {x, y};
+        this.field[x][y] = pathCharacter;
     }
 }
 
@@ -46,4 +57,8 @@ const myField = new Field([
     [fieldCharacter, hat, fieldCharacter],
 ]);
 
-myField.print();
+while (true) {
+    const direction = prompt('Which way? (u = up, d= down, l = left, r = right): ');
+    myField.movePlayer(direction);
+    myField.print();
+}
