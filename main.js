@@ -114,7 +114,7 @@ Field.generateField = function(height, width, percentage) {
 };
 
 const min = 5;
-const max = 15
+const max = 15;
 const random = Math.floor(Math.random() * (max - min + 1) + min);
 const randomPercentage = Math.floor(Math.random() * 31) + 20;
 const myField = new Field(Field.generateField(random, random, randomPercentage));
