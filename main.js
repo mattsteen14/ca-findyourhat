@@ -14,8 +14,8 @@ const randomY = Math.floor(Math.random() * height);
 class Field {
     constructor(field) {
         this.field = field;
-        this.playerPosition = { x: randomX, y: randomY };
-        this.field[randomX][randomY] = pathCharacter;
+        this.playerPosition = { x: playerX, y: playerY };
+        this.field[playerX][playerY] = pathCharacter;
     }
     print() {
         this.field.forEach(row => console.log(row.join('')));
@@ -58,7 +58,8 @@ class Field {
         }
     }
     resetField(height, width, percentage) {
-        this.field = Field.generateField(height, width, percentage);
+        const { field, playerX, playerY } = Field.generateField(height, width, percentage);
+        this.field = field;
         this.playerPosition = { x: randomX, y: randomY };
         this.field[randomX][randomY] = pathCharacter;
         console.clear();
@@ -127,12 +128,15 @@ Field.generateField = function (height, width, percentage) {
         const row = Array(width).fill(fieldCharacter);
         fieldGrid.push(row);
     }
+    // Use the predefined randomX/Y for player position
+    const playerX = randomX;
+    const playerY = randomY;
     // Place hat, ensuring it's not at (0, 0)
     let hatX, hatY
     do {
         hatX = Math.floor(Math.random() * width);
         hatY = Math.floor(Math.random() * height);
-    } while (hatX === 0 && hatY === 0);
+    } while (hatX === playerX && hatY === playerY);
     fieldGrid[hatY][hatX] = hat;
     // Place holes
     for (let i = 0; i < holeCount; i++) {
@@ -140,13 +144,15 @@ Field.generateField = function (height, width, percentage) {
         do {
             x = Math.floor(Math.random() * width);
             y = Math.floor(Math.random() * height);
-        } while ((x === 0 && y === 0) || fieldGrid[y][x] !== fieldCharacter); //Make sure we're putting the hole in an empty spot
+        } while ((x === playerX && y === playerY) || (x === hatX && x === hatY) || fieldGrid[y][x] !== fieldCharacter); //Make sure we're putting the hole in an empty spot
         fieldGrid[y][x] = hole;
     }
-    return fieldGrid;
+    // fieldGrid[playerY][playerX] = pathCharacter;
+    return { field: fieldGrid, playerX, playerY};
 };
 
-const myField = new Field(Field.generateField(height, width, percentage));
+const { field, playerX, playerY } = Field.generateField(height, width, percentage);
+const myField = new Field(field, playerX, playerY)
 
 console.clear();
 // myField.print();
