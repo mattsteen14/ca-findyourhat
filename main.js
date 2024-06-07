@@ -5,11 +5,17 @@ const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
 
+let height = 10;
+let width = 10;
+let percentage = 25;
+const randomX = Math.floor(Math.random() * width);
+const randomY = Math.floor(Math.random() * height);
+
 class Field {
     constructor(field) {
         this.field = field;
-        this.playerPosition = { x: 0, y: 0 };
-        this.field[0][0] = pathCharacter;
+        this.playerPosition = { x: randomX, y: randomY };
+        this.field[randomX][randomY] = pathCharacter;
     }
     print() {
         this.field.forEach(row => console.log(row.join('')));
@@ -53,8 +59,8 @@ class Field {
     }
     resetField(height, width, percentage) {
         this.field = Field.generateField(height, width, percentage);
-        this.playerPosition = { x: 0, y: 0 };
-        this.field[0][0] = pathCharacter;
+        this.playerPosition = { x: randomX, y: randomY };
+        this.field[randomX][randomY] = pathCharacter;
         console.clear();
         this.print();
     }
@@ -140,9 +146,6 @@ Field.generateField = function (height, width, percentage) {
     return fieldGrid;
 };
 
-let height = 10;
-let width = 10;
-let percentage = 25;
 const myField = new Field(Field.generateField(height, width, percentage));
 
 console.clear();
