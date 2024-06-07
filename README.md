@@ -64,11 +64,11 @@
 
 1. In order to start this project, you should have completed lessons at least through Classes in our Introduction to JavaScript curriculum.
 
-In this project, you’ll be building an interactive terminal game with JavaScript classes. Because the goal involves user input, make sure you read our guide on working with user input in Node.js. If you complete this project on our platform, you can test and run your code with the command node main.js in our terminal.
+  In this project, you’ll be building an interactive terminal game with JavaScript classes. Because the goal involves user input, make sure you read our guide on working with user input in Node.js. If you complete this project on our platform, you can test and run your code with the command node main.js in our terminal.
 
 2. Your project is centered on a Field class. This and the following tasks will describe how the class should function at a high level, and it will be up to you to figure out the implementation in code. As you go, test your code by creating instances of the class and calling its methods.
 
-The Field constructor should take a two-dimensional array representing the “field” itself. A field consists of a grid containing “holes” (O) and one “hat” (^). We use a neutral background character (░) to indicate the rest of the field itself. The player will begin in the upper-left of the field, and the player’s path is represented by *.
+  The Field constructor should take a two-dimensional array representing the “field” itself. A field consists of a grid containing “holes” (O) and one “hat” (^). We use a neutral background character (░) to indicate the rest of the field itself. The player will begin in the upper-left of the field, and the player’s path is represented by *.
 
   ```js
   *░O
@@ -77,7 +77,7 @@ The Field constructor should take a two-dimensional array representing the “fi
   ```
 
 
-Your class should take a single argument representing the field:
+  Your class should take a single argument representing the field:
 
   ```js
   const myField = new Field([
@@ -91,22 +91,24 @@ Your class should take a single argument representing the field:
 
 4. Your game should be playable by users. In order to facilitate this, build out the following behavior:
 
-When a user runs main.js, they should be prompted for input and be able to indicate which direction they’d like to “move”.
-After entering an instruction, the user should see a printed result of their current field map with the tiles they have visited marked with *. They should be prompted for their next move.
-This should continue until the user either:
+  When a user runs main.js, they should be prompted for input and be able to indicate which direction they’d like to “move”.
+  After entering an instruction, the user should see a printed result of their current field map with the tiles they have visited marked with *. They should be prompted for their next move.
+  This should continue until the user either:
 
-Wins by finding their hat.
-Loses by landing on (and falling in) a hole.
-Attempts to move “outside” the field.
-When any of the above occur, let the user know and end the game.
+  Wins by finding their hat.
+  Loses by landing on (and falling in) a hole.
+  Attempts to move “outside” the field.
+  When any of the above occur, let the user know and end the game.
 
 5. Add a .generateField() method to your Field class. This doesn’t need to be tied to a particular instance, so make it a static method of the class itself.
 
-This method should at least take arguments for height and width of the field, and it should return a randomized two-dimensional array representing the field with a hat and one or more holes. In our solution, we added a third percentage argument used to determine what percent of the field should be covered in holes."
+  This method should at least take arguments for height and width of the field, and it should return a randomized two-dimensional array representing the field with a hat and one or more holes. In our solution, we added a third percentage argument used to determine what percent of the field should be covered in holes."
 
 ### My Comments
 
 This was such a fun project. I don't do this very often with the Codecademy challenge/portfolio projects but I found myself getting sidetracked and playing around before I had completed all of the basic tasks. As I was working on task 4 I ended up adding functionality to the resetField helper so that the player can customise their field if they choose to play again. At one point I started playing with randomly generating the field. As I was looking at the task 7 extension tasks, I saw the 'create a hard mode' bullet point and that lead to me implementing a prompt for the player to choose their difficulty level. I will definitely have a go at the task 7 extension tasks. I've put them in my read me <a href="#roadmap">roadmap section</a>. Through playing the game myself I definitely think that the field validator would be much needed. Often it generates fields that are impossible to play as it puts loads of holes around the hat, especially in the harder difficulties. So I need to sort that out. 
+
+*Update - Successfully been able to get the player/pathCharacter to start on a random location, not the upper left corner. For this I made randomX & randomY consts with Math.random * width & height respectfully which I then passed in as the indexes for playerPosition & pathCharacter. Then to ensure that the holes & hat don't go on the playerPosition I changed the while conditions from checking that x & y are at 0 (top left corner) to randomX & randomY, the playerPosition/pathCharacter allocation.*
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -166,7 +168,10 @@ This is an example of how to list things you need to use the software and how to
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Have the character start on a random location that’s not the upper-left corner.
+- [x] Complete project as per brief.
+- [x] Add new features to game.
+- [x] Share on Codecademy forums for feedback.
+- [x] Have the character start on a random location that’s not the upper-left corner.
 - [ ] Create a “hard mode” where one or more holes are added after certain turns.
 - [ ] Improve your game’s graphics and interactivity in the terminal.
 - [ ] Create a field validator to ensure that the field generated by Field.generateField() can actually be solved.
