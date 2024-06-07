@@ -14,12 +14,36 @@ class Field {
     print() {
         this.field.forEach(row => console.log(row.join('')));
     }
+    difficultyLevel(difficulty) {
+        let min = 5;
+        let max = 15;
+        const random = Math.floor(Math.random() * (max - min + 1) + min);
+        const randomPercentage = Math.floor(Math.random() * 31) + 20;
+        switch (difficulty) {
+            case 'e': // Easy difficulty
+                this.resetField(10, 10, 10);
+                break;
+            case 'n': // Normal difficulty
+                this.resetField(10, 10, 25);
+                break;
+            case 'h': // Hard difficulty
+                this.resetField(10, 10, 35);
+                break;
+            case 'r': // Random difficulty
+                this.resetField(random, random, randomPercentage);
+                break;
+            default: 
+                console.log('Invalid difficulty level');
+                return false;
+        }
+        return true;
+    }
     playerChoice() {
         const choice = prompt('Would you like to play again? y or n: ');
         if (choice.toLowerCase() === 'y') {
             console.log(`Now it's time to customise your field of play...`)
             const height = parseInt(prompt('Enter field grid height: '), 10);
-            const width = parseInt(prompt ('Enter field grid width: '), 10);
+            const width = parseInt(prompt('Enter field grid width: '), 10);
             const percentage = parseInt(prompt('Enter percentage of holes on field: '), 10);
             this.resetField(height, width, percentage);
         } else {
@@ -30,8 +54,9 @@ class Field {
     resetField(height, width, percentage) {
         this.field = Field.generateField(height, width, percentage);
         this.playerPosition = { x: 0, y: 0 };
+        this.field[0][0] = pathCharacter;
         console.clear();
-        // this.print();
+        this.print();
     }
     movePlayer(direction) {
         let { x, y } = this.playerPosition;
@@ -60,21 +85,25 @@ class Field {
         const nextPosition = this.field[x][y];
         if (nextPosition === hole) {
             console.log('You fell into a hole!');
+            console.log(`Unlucky. Let's recap your field of play...`)
+            myField.print();
             this.playerChoice();
             return;
         } else if (nextPosition === hat) {
             console.log('You found your hat!');
+            console.log(`Congratulations! Here is your winning field of of play...`)
+            myField.print();
             this.playerChoice();
             return;
         }
         this.field[this.playerPosition.x][this.playerPosition.y] = fieldCharacter;
-        this.playerPosition = {x, y};
+        this.playerPosition = { x, y };
         this.field[x][y] = pathCharacter;
     }
 }
 
 //Static method for generating a field
-Field.generateField = function(height, width, percentage) {
+Field.generateField = function (height, width, percentage) {
     if (!Number.isInteger(height) || height <= 0) {
         throw new Error('Height must be a positive integer');
     }
@@ -86,8 +115,6 @@ Field.generateField = function(height, width, percentage) {
     }
     const totalCells = height * width;
     const holeCount = Math.floor((percentage / 100) * totalCells);
-    // const tiles = [hat, hole, fieldCharacter, pathCharacter];
-    // const random = Math.floor(Math.random() * tiles.length);
     const fieldGrid = [];
     //Initialise a field with all field characters
     for (let i = 0; i < height; i++) {
@@ -108,22 +135,27 @@ Field.generateField = function(height, width, percentage) {
             x = Math.floor(Math.random() * width);
             y = Math.floor(Math.random() * height);
         } while ((x === 0 && y === 0) || fieldGrid[y][x] !== fieldCharacter); //Make sure we're putting the hole in an empty spot
-        fieldGrid[y][x] =  hole;
+        fieldGrid[y][x] = hole;
     }
     return fieldGrid;
 };
 
-const min = 5;
-const max = 15;
-const random = Math.floor(Math.random() * (max - min + 1) + min);
-const randomPercentage = Math.floor(Math.random() * 31) + 20;
-const myField = new Field(Field.generateField(random, random, randomPercentage));
+let height = 10;
+let width = 10;
+let percentage = 25;
+const myField = new Field(Field.generateField(height, width, percentage));
 
 console.clear();
-myField.print();
+// myField.print();
 
-while (true) {
+const difficulty = prompt('Choose difficulty level (e = easy, n = normal, h = hard, r = random): ')
+if (myField.difficultyLevel(difficulty)) {
+    while (true) {
     const direction = prompt('Which way? (u = up, d= down, l = left, r = right): ');
     myField.movePlayer(direction);
+    console.clear();
     myField.print();
+    }
+} else {
+    console.log('Game over due to invalid difficulty selection.');
 }
