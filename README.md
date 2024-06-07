@@ -78,6 +78,7 @@ The Field constructor should take a two-dimensional array representing the “fi
 
 
 Your class should take a single argument representing the field:
+
   ```js
   const myField = new Field([
   ['*', '░', 'O'],
